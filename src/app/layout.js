@@ -1,7 +1,12 @@
-import { Inter } from 'next/font/google'
+import { Roboto } from 'next/font/google';
 import './globals.css'
+import Header from '../components/layout/Header';
+import { AppProvider } from "../components/AppContext";
+import { Toaster } from 'react-hot-toast';
 
-const inter = Inter({ subsets: ['latin'] })
+
+
+const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
 
 export const metadata = {
   title: 'Create Next App',
@@ -9,9 +14,31 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={roboto.className}>
+        <main className='max-w-4xl mx-auto p-4'>
+          <AppProvider>
+            <Toaster />
+            <Header />
+            {children}
+            <footer className="border-t p-16 text-center text-red-500">
+              &copy; 2024 All right reserved
+            </footer>
+          </AppProvider>
+        </main>
+      </body>
     </html>
   )
 }
+
+
+//4:14:31 react hot toast
+
+//ako iskame po kusno da dobavim kod za image
+//3:33 do 3:44 image logic
+//3:44:45 Amazon for upload image
+//6:09:35 premestvane na funkciqta v otdelen komponent koqto e svurzana s image
+//6:13:00 продължава ако искаме да имаме image
+//6:41:40
