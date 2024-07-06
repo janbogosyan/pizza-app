@@ -3,6 +3,7 @@ import UserTabs from "@/components/layout/UserTabs"
 import { useEffect, useState } from "react";
 import { useProfile } from '../../components/UseProfile';
 import toast from "react-hot-toast";
+import DeleteButton from "@/components/DeleteButton";
 
 export default function CategoriesPage() {
 
@@ -10,6 +11,7 @@ export default function CategoriesPage() {
     const [categories, setCategories] = useState([]);
     const { loading: profileLoading, data: profileData } = useProfile(); //its object{} renaming loading to profileLoading and data to profileData
     const [editedCategory, setEditedCategory] = useState(null);
+
 
     function fetchCategories() {
         fetch('/api/categories').then(res => {
@@ -52,6 +54,29 @@ export default function CategoriesPage() {
         });
     }
 
+    async function handleDeleteClick(_id) {
+        // console.log(_id);
+        const promise = new Promise(async (resolve, reject) => {
+            const response = await fetch('/api/categories?_id=' + _id, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                resolve();
+            } else {
+                reject();
+            }
+        });
+
+        await toast.promise(promise, {
+            loading: 'Deleting...',
+            success: 'Deleted',
+            error: 'Error',
+        });
+
+        fetchCategories();
+    }
+
+
     if (profileLoading) {
         return 'Loading user info...';
     }
@@ -80,27 +105,48 @@ export default function CategoriesPage() {
                             onChange={e => setCategoryName(e.target.value)}
                         />
                     </div>
-                    <div className="pt-2">
+                    <div className="pt-2 flex gap-2">
                         <button className='border border-primary' type="submit">
                             {editedCategory ? 'Update' : 'Create'}
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => { setEditedCategory(null); setCategoryName('') }}
+                        >
+                            Cancel
                         </button>
                     </div>
                 </div>
             </form>
             <div>
-                <h2 className="mt-8 text-sm text-gray-500">Edit category:</h2>
+                <h2 className="mt-8 text-sm text-gray-500">Existing categories:</h2>
                 {categories?.length > 0 && categories.map(c =>
-                    <button
-                        className="rounded-xl p-2 px-4 flex gap-1 cursor-pointer mb-2"
-                        onClick={() => {
-                            setEditedCategory(c);
-                            setCategoryName(c.name)
-                        }}
+                    <div
+                        className="bg-gray-100 rounded-xl p-2 px-4 flex gap-1 mb-1 items-center"
                     >
-                        <span>{c.name}</span>
-                    </button>
+                        <div className="grow" >
+                            {c.name}
+                        </div>
+                        <div className="flex gap-1">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setEditedCategory(c);
+                                    setCategoryName(c.name)
+                                }}
+                            > Edit
+                            </button>
+                            <DeleteButton
+                                label='Delete'
+                                onDelete={() => handleDeleteClick(c._id)}
+                            />
+                        </div>
+                    </div>
                 )}
             </div>
         </section>
     )
 }
+
+
+//delete will be database request so we need to create this function for deleting 

@@ -28,9 +28,9 @@ export default function RegisterPage() {
         //ИЗЧАКВА ДА ИЗВЛЕЧЕ ДАННИ ОТ /api/register   и сме го кръстили 'const response'' защото тук получава отговор от /api/register
         const response = await fetch('/api/register', {        //извличам createdUser от api/register и с данните които ми връща правя POST заявка //This line sends an HTTP request to the server.The fetch function is used to make the request //await is used to wait for the response from the server before moving to the next line of code. This makes it an asynchronous operation, meaning it doesn't block the rest of the program from running while it waits for the server to respond.
             method: 'POST',
-            body: JSON.stringify({email, password}),
-            headers: {'Content-Type': 'application/json'},
-          });
+            body: JSON.stringify({ email, password }),
+            headers: { 'Content-Type': 'application/json' },
+        });
         // console.log(response) вътре в него има .ок по default
         if (response.ok) {
             setUserCreated(true);

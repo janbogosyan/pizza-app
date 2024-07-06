@@ -6,7 +6,7 @@ import { User } from "./../../../models/User";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";      
 
-//кръстили сме го req , защото тук очаква да получи POST заявката от register/page и ще върне отговор 
+//получава данни от /register/page {email,password} кръстили сме го req(заявка),защото тук очаква да получи POST заявката от register/page// 
 export async function POST(req) {
     const body = await req.json();
     mongoose.connect(process.env.MONGO_URL); //we must connect to our database like this
