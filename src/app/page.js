@@ -37,7 +37,7 @@ export default function Home() {
       </section>
       {/* footera също сме го преместили в layout.js */}
       {/* <footer className="border-t p-16 text-center text-red-500">
-         &copy; 2024 All right reserved
+        &copy; 2024 All right reserved
       </footer> */}
     </>
   )

@@ -1,24 +1,19 @@
 'use client';
 import { useSession } from "next-auth/react";  //The useSession() React Hook in the NextAuth.js client is the easiest way to check if someone is signed in.
-import Image from "next/image";
+// import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import UserTabs from "@/components/layout/UserTabs";
 import toast from "react-hot-toast";
+import UserForm from '@/components/layout/UserForm'
 
 export default function ProfilePage() {
     const session = useSession();
-    // console.log(session);
-    const [userName, setUserName] = useState('');
     // const [saved, setSaved] = useState(false);
     // const [isSaving, setIsSaving] = useState(false);
-    const [phone, setPhone] = useState('');
-    const [streetAddress, setStreetAddress] = useState('');
-    const [postalCode, setPostalCode] = useState('');
-    const [city, setCity] = useState('');
-    const [country, setCountry] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
     const [profileFetched, setProfileFetched] = useState(false);  //използваме го в видеото на 5:08:00 малък детайл за подобряване на user expirience
+    const [user, setUser] = useState(null);
 
     const { status } = session; //по този начин просто взимаме status-a от обекта session
 
@@ -27,15 +22,10 @@ export default function ProfilePage() {
     useEffect(() => {
         if (status === 'authenticated') {
             // console.log(session);
-            setUserName(session.data.user.name);
             fetch('/api/profile').then(response => {
                 response.json().then(data => {
                     console.log(data.admin); //true
-                    setPhone(data.phone);
-                    setStreetAddress(data.streetAddress);
-                    setPostalCode(data.postalCode);
-                    setCity(data.city);
-                    setCountry(data.country);
+                    setUser(data);
                     setIsAdmin(data.admin);
                     setProfileFetched(true);
                 })
@@ -46,7 +36,7 @@ export default function ProfilePage() {
     //body: JSON.stringify({ name:userName }) --- name will be userName, name go vmuknahme sega prosto kato novo naimenovanie
     //we sending in body: JSON.stringify  only the userName bcs we are going to update here only the userName 
     // we will handle this request in our api/profile/route.js
-    async function handleProfileInfoUpdate(e) {
+    async function handleProfileInfoUpdate(e, data) {
         e.preventDefault();
         // setSaved(false); //just to be sure to reset this
         // setIsSaving(true)
@@ -55,17 +45,10 @@ export default function ProfilePage() {
             const response = await fetch('/api/profile', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: userName,
-                    streetAddress,
-                    phone,
-                    postalCode,
-                    city,
-                    country,
-                }),
+                body: JSON.stringify(data),
             });
             //4:22:00
-            if (response.ok) 
+            if (response.ok)
                 resolve()
             else
                 reject();
@@ -78,23 +61,6 @@ export default function ProfilePage() {
         });
     }
 
-    async function handleFileChange(e) {
-        // console.log('hello')
-        //    console.log(e) //vutre po default ima mnogo neshta , moje da vidim koe ni trqbva kato gi console lognem
-        ////FormData objects are used to capture HTML form and submit it using fetch or another network method
-        //fetch - демек изпращаме данните към /api/upload
-        const files = e.target.files;
-        if (files?.length === 1) {
-            // console.log('hello 2')
-            const data = new FormData;
-            data.set('file', files[0]);
-            
-            await fetch('/api/upload', {
-                method: 'POST',
-                body: data
-            });
-        }
-    }
 
     if (status === 'loading' || !profileFetched) {
         return 'Loading...';
@@ -112,63 +78,8 @@ export default function ProfilePage() {
             {/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! isAdmin={isAdmin} taka trqbva da e, no go hardcordnah da pokazva true zashtoto neshto ne raboti pravilno!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */}
             <UserTabs isAdmin={isAdmin} />
 
-            <div className="max-w-md mx-auto mt-8">
-                {/* {saved && (
-                    <h2 className="text-center bg-green-100 p-4 rounded-lg border border-orange-300 ">
-                        Profile saved!
-                    </h2>
-                )}
-                {isSaving && (
-                    <h2 className="text-center bg-orange-100 p-4 rounded-lg border border-green-300 ">
-                        Saving!...
-                    </h2>
-                )} */}
-                {/* razdelqme dizaina na lqva i dqsna chast */}
-                <div className="flex gap-4">
-                    {/* lqvata chast */}
-                    <div>
-                        <div className="p-2 rounded-lg relative">
-                            <Image className="rounded-lg w-full h-full mb-1" src={userImage} alt={'avatar'}
-                                width={250} height={250} />
-                            {/*3:34:00 chrez tozi kod v <label> i vkluchitelno <label> razbira se, shte moje da editvame snimkata na profila 
-                            premahnahme <button>Edit</button> i vmesto nego slojihme <span>Edit</span>*/}
-                            <label >
-                                {/* type="files"  !!!*/}
-                                <input type="file" className="hidden" onChange={handleFileChange} />
-                                <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
-                                    Edit
-                                </span>
-                            </label>
-                        </div>
-                    </div>
-                    {/* dqsnata chast */}
-                    <form className="grow" onSubmit={handleProfileInfoUpdate}>
-                        <label>
-                            First and last name
-                        </label>
-                        <input type="text" placeholder="first and last name"
-                            value={userName} onChange={e => setUserName(e.target.value)} />
-                        <label>Email</label>
-                        <input type="email" value={session.data.user.email} disabled={true} />
-                        <label>Phone</label>
-                        <input type="tel" placeholder="Phone number" value={phone} onChange={e => setPhone(e.target.value)} />
-                        <label>Street address</label>
-                        <input type="text" placeholder="Street address" value={streetAddress} onChange={e => setStreetAddress(e.target.value)} />
-                        <div className="flex gap-2">
-                            <div>
-                                <label>City</label>
-                                <input type="text" placeholder="City" value={city} onChange={e => setCity(e.target.value)} />
-                            </div>
-                            <div>
-                                <label>Postal Code</label>
-                                <input type="text" placeholder="Postal code" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
-                            </div>
-                        </div>
-                        <label>Country</label>
-                        <input type="text" placeholder="Country" value={country} onChange={e => setCountry(e.target.value)} />
-                        <button type="submit">Save</button>
-                    </form>
-                </div>
+            <div className="max-w-lg mx-auto mt-8">
+                <UserForm user={user} onSave={handleProfileInfoUpdate} />
             </div>
         </section>
     )

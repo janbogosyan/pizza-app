@@ -36,7 +36,7 @@ export default function EditMenuItemPage() {
     }, [])
 
     //_id да бъде id от useParams
-    async function handleFormSubmit(e, data) {
+    async function handleFormSubmit(e,  data) {
         e.preventDefault();
         data = { ...data, _id: id };
         const savingPromise = new Promise(async (resolve, reject) => {
@@ -95,7 +95,7 @@ export default function EditMenuItemPage() {
     return (
         <section className="mt-8">
             <UserTabs isAdmin={true} />
-            <div className="max-w-md mx-auto mt-8">
+            <div className="max-w-lg mx-auto mt-8">
                 <Link href={'/menu-items'} className="button">
                     <Left />
                     <span>Show all menu items</span>
