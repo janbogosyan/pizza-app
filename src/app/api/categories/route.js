@@ -28,10 +28,10 @@ export async function GET() {
 //7:50
 export async function DELETE(req) {
     mongoose.connect(process.env.MONGO_URL);
-    // console.log(req.url); //url is by default (also query,search and etc...)
-    const url = new URL(req.url) //pravim si go taka za da stane url na object
+    // console.log(req.url); //url is by default (also we have by default - query,search and etc...)
+    const url = new URL(req.url) //pravim si go taka za da stane url na object 
     const _id = url.searchParams.get('_id');
     console.log(url.searchParams) // i sega kato url e object moje da go popitame da ni vurne informaciqta v .searchParams koeto e neshto po default i moje da vidim rezultata tuk v TERMINAL
-    await Category.deleteOne({_id});
+    await Category.deleteOne({_id}); //i sled kato imame id-to moje veche da go iztriem
     return Response.json(true);
 }

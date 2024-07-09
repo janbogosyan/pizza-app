@@ -16,13 +16,13 @@ export default function MenuItemsPage() {
     //GET is by default thats why we didnt write it
     //ofcourse this endpoint /api/menu-items we need always to create in the api folder/menu-items
     useEffect(() => {
-        fetch('/api/menu-items')
-            .then(res => {
-                res.json().then(item => {
-                    setMenuItems(item);
-                });
-            })
+        fetch('/api/menu-items').then(res => {
+            res.json().then(menuItems => {
+                setMenuItems(menuItems);
+            });
+        })
     }, []);
+
 
     if (loading) {
         return 'Loading user info...';

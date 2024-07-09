@@ -35,10 +35,10 @@ export default function EditMenuItemPage() {
         })
     }, [])
 
-
+    //_id да бъде id от useParams
     async function handleFormSubmit(e, data) {
         e.preventDefault();
-        data = { ...data, _id: id };          //_id да бъде id от useParams
+        data = { ...data, _id: id };
         const savingPromise = new Promise(async (resolve, reject) => {
             const response = await fetch('/api/menu-items', {
                 method: 'PUT',

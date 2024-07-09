@@ -48,12 +48,15 @@ export default function CategoriesPage() {
                 reject();
         });
         await toast.promise(creationPromise, {
-            loading: 'Creating your new category...',
-            success: 'Category created',
-            error: 'Error, sorry...'
+            loading: editedCategory
+                ? 'Updating category...'
+                : 'Creating your new category...',
+            success: editedCategory ? 'Category updated' : 'Category created',
+            error: 'Error, sorry...',
         });
     }
 
+    //взимаме _id за да може да вземем id-to на категорията която искаме да изтрием 7:46:50
     async function handleDeleteClick(_id) {
         // console.log(_id);
         const promise = new Promise(async (resolve, reject) => {

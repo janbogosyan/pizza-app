@@ -17,29 +17,30 @@ export default function NewMenuItemPage() {
     const { loading, data } = useProfile();
 
 
-    async function handleFormSubmit(e, data) {
-        e.preventDefault();
+    async function handleFormSubmit(ev, data) {
+        ev.preventDefault();
         const savingPromise = new Promise(async (resolve, reject) => {
             const response = await fetch('/api/menu-items', {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: { 'Content-Type': 'application/json' },
             });
-            // console.log(response);
             if (response.ok)
                 resolve();
             else
                 reject();
         });
+
         await toast.promise(savingPromise, {
             loading: 'Saving this tasty item',
             success: 'Saved',
             error: 'Error',
         });
-    
+
         setRedirectToItems(true);
     }
-    if(redirectToItems){
+
+    if (redirectToItems) {
         return redirect('/menu-items');
     }
 
@@ -60,7 +61,7 @@ export default function NewMenuItemPage() {
                     <span>Show all menu items</span>
                 </Link>
             </div>
-            <MenuItemForm menuItem={null} onSubmit={handleFormSubmit}/>
+            <MenuItemForm menuItem={null} onSubmit={handleFormSubmit} />
         </section>
     )
 }
