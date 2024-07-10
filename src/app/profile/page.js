@@ -11,20 +11,21 @@ export default function ProfilePage() {
     const session = useSession();
     // const [saved, setSaved] = useState(false);
     // const [isSaving, setIsSaving] = useState(false);
+    const [user, setUser] = useState(null);
+    const [image,setImage] = useState()
     const [isAdmin, setIsAdmin] = useState(false);
     const [profileFetched, setProfileFetched] = useState(false);  //използваме го в видеото на 5:08:00 малък детайл за подобряване на user expirience
-    const [user, setUser] = useState(null);
-
     const { status } = session; //по този начин просто взимаме status-a от обекта session
 
     // console.log(session); //f12 в browsera в consolata
     // чрез този блок от код, след като напишем нови данни в нашия Profile дори и да рефрешнем страницата, ще си останат запаметени там
     useEffect(() => {
         if (status === 'authenticated') {
-            // console.log(session);
+            // setUserName(session.data.user.name);
+            // setImage(session.data.user.image);
             fetch('/api/profile').then(response => {
                 response.json().then(data => {
-                    console.log(data.admin); //true
+                    // console.log(data.admin); //true
                     setUser(data);
                     setIsAdmin(data.admin);
                     setProfileFetched(true);

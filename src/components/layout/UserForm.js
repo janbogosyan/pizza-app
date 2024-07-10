@@ -5,13 +5,15 @@ import Image from "next/image";
 
 export default function UserForm({ user, onSave }) {
 
-    const [image, setImage] = useState(user?.image || '');  
-    const [userName, setUserName] = useState(user?.userName || '');  //8:41:00
+    const [image, setImage] = useState(user?.image || '');
+    const [userName, setUserName] = useState(user?.name || '');  //onSave(ev, { name:userName,
     const [phone, setPhone] = useState(user?.phone || '');
     const [streetAddress, setStreetAddress] = useState(user?.streetAddress || '');
     const [postalCode, setPostalCode] = useState(user?.postalCode || '');
     const [city, setCity] = useState(user?.city || '');
     const [country, setCountry] = useState(user?.country || '');
+
+    
 
     return (
         <div className="flex gap-4">
@@ -35,15 +37,22 @@ export default function UserForm({ user, onSave }) {
             <form
                 className="grow"
                 onSubmit={ev =>
-                    onSave(ev, { name:userName, phone, streetAddress, postalCode, city, country})}
+                    onSave(ev, { name: userName, phone, streetAddress, postalCode, city, country })}
             >
                 <label>
                     First and last name
                 </label>
                 <input type="text" placeholder="first and last name"
                     value={userName} onChange={e => setUserName(e.target.value)} />
+
                 <label>Email</label>
-                <input type="email" value={DataTransfer.email} disabled={true} />
+                <input
+                    type="email"
+                    value={user.email}
+                    disabled={true}
+                    placeholder={'email'}
+                />
+
                 <label>Phone</label>
                 <input type="tel" placeholder="Phone number" value={phone} onChange={e => setPhone(e.target.value)} />
                 <label>Street address</label>
