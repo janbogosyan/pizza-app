@@ -6,7 +6,7 @@ const ExtraPriceSchema = new Schema({
 })
 
 const MenuItemSchema = new Schema({
-    // image:{type:String},
+    image:{type:String},
     name: { type: String },
     description: { type: String },
     category: {type: String, ref: 'Category'},

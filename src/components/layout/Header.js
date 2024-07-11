@@ -33,9 +33,9 @@ export default function Header() {
                     ST PIZZA
                 </Link>
                 <Link href={'/'}>Home</Link>
-                <Link href={''}>Menu</Link>
-                <Link href={''}>About</Link>
-                <Link href={''}>Contact</Link>
+                <Link href={'/menu'}>Menu</Link>
+                <Link href={'/#about'}>About</Link>
+                <Link href={'/#contact'}>Contact</Link>
             </nav>
             <nav className="flex items-center gap-4  text-gray-500 font-semibold">
                 {status === "authenticated" && (
@@ -64,7 +64,7 @@ export default function Header() {
     );
 }
 
-
+//<Link href={'/#about'}>About</Link>  sloji li sme # pred about i sme setnali id="about" v /app/page.js toest sled kato kliknem vurhu ABOUT v nashiq sait shte ni skrolne avtomatichno na dolu kudeto e nashiq about
 //The useSession() React Hook in the NextAuth.js client is the easiest way 
 //to check if someone is signed in. You can use the useSession hook from 
 //anywhere in your application (e.g. in a header component).

@@ -7,9 +7,10 @@ export default function Home() {
   return (
     <>
       {/* <Header /> сме го преместили в layout.js за да може да е видим на всички страници */}
+      {/* tova id="about" go setnahme zaradi /components/layout/Header.js tam e obqsneno */}
       <Hero />
       <HomeMenu />
-      <section className="text-center my-16">
+      <section className="text-center my-16" id="about">
         <SectionHeaders subHeader={'Our story'} mainHeader={'About us'} />
         <div className="max-w-md mx-auto text-grey-500 mt-4
         flex-col gap-4">
@@ -27,7 +28,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-      <section className="text-center my-8">
+      <section className="text-center my-8" id="contact">
         <SectionHeaders subHeader={'Don\'t hesitate'} mainHeader={'Contact us'} />
         <div className="mt-8">
           <a className="text-4xl underline text-purple-200" href="tel:+3545123123">
