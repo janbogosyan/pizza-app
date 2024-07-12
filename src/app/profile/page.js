@@ -12,7 +12,7 @@ export default function ProfilePage() {
     // const [saved, setSaved] = useState(false);
     // const [isSaving, setIsSaving] = useState(false);
     const [user, setUser] = useState(null);
-    const [image,setImage] = useState()
+    const [image, setImage] = useState()
     const [isAdmin, setIsAdmin] = useState(false);
     const [profileFetched, setProfileFetched] = useState(false);  //използваме го в видеото на 5:08:00 малък детайл за подобряване на user expirience
     const { status } = session; //по този начин просто взимаме status-a от обекта session
@@ -61,8 +61,22 @@ export default function ProfilePage() {
             error: 'Error',
         });
     }
-
-
+    //--------------------------------------------------------------------------------------
+    //to send the image 
+    async function handleFileChange(ev) {
+        const files = ev.target.files;
+        if (files?.length === 1) {
+            const data = new FormData;
+            // we are going to send only 1 file(image) and the first from the array
+            data.set('file', files[0]);
+            await fetch('/api/upload', {
+                method: 'POST',
+                body: data,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+        }
+    }
+    //--------------------------------------------------------------------------------------------
     if (status === 'loading' || !profileFetched) {
         return 'Loading...';
     }

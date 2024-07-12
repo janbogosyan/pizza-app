@@ -32,6 +32,7 @@ export default function MenuItemsPage() {
         return 'Not an admin.';
     }
     console.log(menuItems)
+    
 
     return (
         <section className="mt-8 max-w-lg mx-auto">

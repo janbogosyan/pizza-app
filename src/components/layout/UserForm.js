@@ -1,10 +1,10 @@
 'use client';
 import { useState } from "react";
-import Image from "next/image";
+// import Image from "next/image";
 import { useProfile } from "../UseProfile";
+import EditableImage from "@/components/layout/EditableImage";
 
-
-export default function UserForm({ user, onSave }) {
+export default function UserForm({ user, onSave}) {
 
     const [image, setImage] = useState(user?.image || '');
     const [userName, setUserName] = useState(user?.name || '');  //onSave(ev, { name:userName,
@@ -21,18 +21,17 @@ export default function UserForm({ user, onSave }) {
         <div className="flex gap-4">
             {/* lqvata chast */}
             <div>
-                <div className="p-2 rounded-lg relative">
-                    <Image className="rounded-lg w-full h-full mb-1" src={image} alt={'avatar'}
-                        width={250} height={250} />
+                <div className="p-2 rounded-lg relative max-w-[120px]">
+                <EditableImage link={image} setLink={setImage} />
                     {/*3:34:00 chrez tozi kod v <label> i vkluchitelno <label> razbira se, shte moje da editvame snimkata na profila 
                 premahnahme <button>Edit</button> i vmesto nego slojihme <span>Edit</span>*/}
-                    <label >
-                        {/* type="files"  !!!*/}
+                        {/* type="file"  za da moje kato natisnem edit da ni otvori nov prozorec za da izberem nova snimka !!!*/}
+                    {/* <label >
                         <input type="file" className="hidden" onChange={onSave} />
                         <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
                             Edit
                         </span>
-                    </label>
+                    </label> */}
                 </div>
             </div>
             {/* dqsnata chast */}
