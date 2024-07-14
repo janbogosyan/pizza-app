@@ -14,13 +14,18 @@ export default function MenuItem(menuItem) {
     const { addToCart } = useContext(CartContext)
 
     function handleAddToCartButtonClick() {
-        if (sizes.length === 0 && extraIngredientPrices.length === 0) {
-            addToCart(menuItem);
-            toast.success('Added to cart')
-        } else {
+        const hasOption = sizes.length > 0 && extraIngredientPrices.length > 0;
+        // The if condition checks if options exist and the popup is not currently displayed.
+        //  If true, it displays the popup and exits the function (return).
+        if (hasOption && !showPopup) { 
             setShowPopup(true);
+            return;
         }
+        addToCart(menuItem, selectedSize, selectedExtras);
+        setShowPopup(false);
+        toast.success('Added to cart!');
     }
+
 
     function handleExtraThingClick(ev, extraThing) {
         const checked = ev.target.checked;
@@ -102,9 +107,15 @@ export default function MenuItem(menuItem) {
                                 </div>
                             )}
                             <button
+                                onClick={handleAddToCartButtonClick}
                                 className="primary sticky bottom-2"
                                 type="button">
                                 Add to cart ${selectedPrice}
+                            </button>
+                            <button
+                                className="mt-2"
+                                onClick={() => setShowPopup(false)}>
+                                Cancel
                             </button>
                         </div>
                     </div>

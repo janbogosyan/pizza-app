@@ -4,7 +4,7 @@
 
 export default function MenuItemTile({ onAddToCart, ...menuItem }) {
 
-    const { image, description, name, basePrice } = menuItem;
+    const { image, description, name, basePrice, sizes, extraIngredientPrices } = menuItem;
 
     return (
         <div className="bg-gray-100 p-4 rounded-lg text-center 
@@ -21,8 +21,11 @@ export default function MenuItemTile({ onAddToCart, ...menuItem }) {
             <button
                 onClick={onAddToCart}
                 className="mt-4 bg-primary text-white rounded-full px-8 py-2">
-                Add to cart ${basePrice}
-            </button>
+                {sizes?.length > 0 || extraIngredientPrices?.length > 0
+                    ? <span> Add to cart (from ${basePrice})</span>
+                    : <span>Add to cart ${basePrice}</span>
+                }
+            </button> 
         </div>
     )
 }
