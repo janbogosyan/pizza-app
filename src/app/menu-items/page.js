@@ -14,7 +14,7 @@ export default function MenuItemsPage() {
     const { loading, data } = useProfile();
 
     //GET is by default thats why we didnt write it
-    //ofcourse this endpoint /api/menu-items we need always to create in the api folder/menu-items
+    //ofcourse this GET/PUT/POST/DELETE endpoint /api/menu-items we need always to create in the api folder/menu-items
     useEffect(() => {
         fetch('/api/menu-items').then(res => {
             res.json().then(menuItems => {

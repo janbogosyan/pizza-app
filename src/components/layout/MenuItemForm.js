@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps";
+import EditableImage from "./EditableImage";
 
 
 export default function MenuItemForm({ onSubmit, menuItem }) {
-
+    const [image, setImage] = useState(menuItem?.image || '');
     const [name, setName] = useState(menuItem?.name || '');
     const [description, setDescription] = useState(menuItem?.description || '');
     const [basePrice, setBasePrice] = useState(menuItem?.basePrice || '');
@@ -35,7 +36,7 @@ export default function MenuItemForm({ onSubmit, menuItem }) {
             <div className="flex items-start gap-4">
                 {/* left side */}
                 <div>
-                    image
+                    <EditableImage link={image} setLink={setImage}/>
                 </div>
                 <div className="grow">
                     <label>Item name</label>
