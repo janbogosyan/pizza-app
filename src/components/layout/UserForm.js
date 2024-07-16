@@ -3,8 +3,9 @@ import { useState } from "react";
 // import Image from "next/image";
 import { useProfile } from "../UseProfile";
 import EditableImage from "@/components/layout/EditableImage";
+import AddressInputs from '@/components/layout/AddressInputs';
 
-export default function UserForm({ user, onSave}) {
+export default function UserForm({ user, onSave }) {
 
     const [image, setImage] = useState(user?.image || '');
     const [userName, setUserName] = useState(user?.name || '');  //onSave(ev, { name:userName,
@@ -16,16 +17,23 @@ export default function UserForm({ user, onSave}) {
     const [admin, setAdmin] = useState(user?.admin || false);
     const { data: loggedInUserData } = useProfile();   //renaming the data we take from useProfile() to loggedInUserData
 
+    function handleAddressChange(propName, value) {
+        if (propName === 'phone') setPhone(value);
+        if (propName === 'streetAddress') setStreetAddress(value);
+        if (propName === 'postalCode') setPostalCode(value);
+        if (propName === 'city') setCity(value);
+        if (propName === 'country') setCountry(value);
+    }
 
     return (
         <div className="flex gap-4">
             {/* lqvata chast */}
             <div>
                 <div className="p-2 rounded-lg relative max-w-[120px]">
-                <EditableImage link={image} setLink={setImage} />
+                    <EditableImage link={image} setLink={setImage} />
                     {/*3:34:00 chrez tozi kod v <label> i vkluchitelno <label> razbira se, shte moje da editvame snimkata na profila 
                 premahnahme <button>Edit</button> i vmesto nego slojihme <span>Edit</span>*/}
-                        {/* type="file"  za da moje kato natisnem edit da ni otvori nov prozorec za da izberem nova snimka !!!*/}
+                    {/* type="file"  za da moje kato natisnem edit da ni otvori nov prozorec za da izberem nova snimka !!!*/}
                     {/* <label >
                         <input type="file" className="hidden" onChange={onSave} />
                         <span className="block border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
@@ -38,7 +46,7 @@ export default function UserForm({ user, onSave}) {
             <form
                 className="grow"
                 onSubmit={ev =>
-                    onSave(ev, { name: userName,admin, phone, streetAddress, postalCode, city, country })}
+                    onSave(ev, { name: userName, admin, phone, streetAddress, postalCode, city, country })}
             >
                 <label>
                     First and last name
@@ -54,21 +62,12 @@ export default function UserForm({ user, onSave}) {
                     placeholder={'email'}
                 />
 
-                <label>Phone</label>
-                <input type="tel" placeholder="Phone number" value={phone} onChange={e => setPhone(e.target.value)} />
-                <label>Street address</label>
-                <input type="text" placeholder="Street address" value={streetAddress} onChange={e => setStreetAddress(e.target.value)} />
-                <div className="grid grid-cols-2 gap-2">
-                    <div>
-                        <label>City</label>
-                        <input type="text" placeholder="City" value={city} onChange={e => setCity(e.target.value)} />
-                    </div>
-                    <div>
-                        <label>Postal Code</label>
-                        <input type="text" placeholder="Postal code" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
-                    </div>
-                </div>
-                {/* i will see this little checkbox Admin only if Iam Admin */}
+                <AddressInputs
+                    addressProps={{ phone, streetAddress, postalCode, city, country }}
+                    setAddressProp={handleAddressChange}
+                />
+
+
                 {loggedInUserData.admin && (
                     <div>
                         {/* {JSON.stringify(admin)} */}
@@ -85,8 +84,6 @@ export default function UserForm({ user, onSave}) {
                         </label>
                     </div>
                 )}
-                <label>Country</label>
-                <input type="text" placeholder="Country" value={country} onChange={e => setCountry(e.target.value)} />
                 <button type="submit">Save</button>
             </form>
         </div>

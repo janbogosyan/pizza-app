@@ -66,8 +66,13 @@ export default function CartPage() {
                     </div>
                 </div>
                 {/* right side */}
-                <div className="bg-gray-100 p-4">
-
+                <div className="bg-gray-100 p-4 rounded-lg">
+                    <h2>Checkout</h2>
+                    <form>
+                        <label>Address</label>
+                        <input type="text" placeholder="Street address"/>
+                        <button type="submit">Pay ${total}</button>
+                    </form>
                 </div>
             </div>
         </section>
